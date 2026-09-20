@@ -1,59 +1,37 @@
-# Eureka Server Configuration
-# This configuration runs Eureka Server on port 8761
-
-# Spring Application Name
 spring:
   application:
     name: eureka-server
-  
-  # JPA/Hibernate Configuration (minimal, as Eureka is stateless in memory)
+
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
 
-# Server Port Configuration
 server:
-  port: 8761
+  port: ${PORT:8761}
+  address: 0.0.0.0
   servlet:
     context-path: /
 
-# Eureka Server Configuration
 eureka:
-  # Eureka Instance Configuration
   instance:
-    hostname: localhost
+    hostname: ${EUREKA_HOSTNAME:localhost}
     prefer-ip-address: false
-    
-  # Eureka Server Configuration
+
   server:
-    # Disable self-registration on the Eureka Server itself
     register-with-eureka: false
-    
-    # Disable fetching registry from other Eureka servers (single server setup)
     fetch-registry: false
-    
-    # Enable renewal threshold update
     enable-self-preservation: true
-    
-    # Period to evaluate expired leases (in milliseconds)
-    # Leases are renewed every 30 seconds by default
     eviction-interval-timer-in-ms: 60000
-    
-    # Renewal percent threshold (65% of services must renew lease)
     renewal-percent-threshold: 0.85
-    
-    # Disable HTTP strict transport security (for development)
     disable-delta: false
 
-  # Eureka Client Configuration (ignored when register-with-eureka is false)
   client:
     register-with-eureka: false
     fetch-registry: false
     service-url:
       defaultZone: http://localhost:8761/eureka/
 
-# Logging Configuration
 logging:
   level:
     root: INFO
@@ -63,22 +41,22 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
 
-# Management Endpoints (for monitoring)
 management:
   endpoints:
     web:
       exposure:
         include: health,info,env
+
   endpoint:
     health:
       show-details: always
+
   health:
     livenessState:
       enabled: true
     readinessState:
       enabled: true
 
-# Application Info (displayed in Eureka Dashboard)
 app:
   name: TalentSync Eureka Server
   version: 1.0.0
