@@ -1,0 +1,24 @@
+package com.talentsync.applicationservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+/**
+ * Application Service
+ * 
+ * Handles candidate job applications and application tracking.
+ * 
+ * Port: 8083
+ */
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
+public class ApplicationServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ApplicationServiceApplication.class, args);
+    }
+
+}

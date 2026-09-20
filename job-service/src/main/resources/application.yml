@@ -1,0 +1,89 @@
+spring:
+  application:
+    name: job-service
+  
+  # JPA/Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  
+  # MySQL Database Configuration
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:job_db}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      initialization-fail-timeout: -1
+  
+  # Defer datasource initialization
+  sql:
+    init:
+      continue-on-error: true
+      mode: never
+
+server:
+  port: 8082
+  servlet:
+    context-path: /
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+
+logging:
+  level:
+    root: INFO
+    com.talentsync.jobservice: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+
+# Application Info
+app:
+  name: TalentSync Job Service
+  version: 1.0.0
+  description: Manages job postings and job details
+
+info:
+  app:
+    name: ${app.name}
+    version: ${app.version}
+    description: ${app.description}
+  company: TalentSync Inc.
+  environment: development
+
+security:
+  jwt:
+    secret: ${JWT_SECRET}
+
+# Swagger/OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
